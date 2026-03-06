@@ -1,0 +1,163 @@
+{
+  "name": "Lote",
+  "type": "object",
+  "properties": {
+    "titulo": {
+      "type": "string",
+      "description": "T\u00edtulo do lote"
+    },
+    "link_original": {
+      "type": "string",
+      "description": "Link do leil\u00e3o original"
+    },
+    "site_leilao": {
+      "type": "string",
+      "description": "Nome do site do leil\u00e3o"
+    },
+    "numero_lote": {
+      "type": "string",
+      "description": "N\u00famero do lote"
+    },
+    "descricao": {
+      "type": "string",
+      "description": "Descri\u00e7\u00e3o completa do lote"
+    },
+    "fotos": {
+      "type": "array",
+      "description": "URLs das fotos do lote",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tipo_bem": {
+      "type": "string",
+      "enum": [
+        "veiculo",
+        "imovel",
+        "maquinario",
+        "eletronico",
+        "outro"
+      ],
+      "description": "Tipo do bem"
+    },
+    "situacao_bem": {
+      "type": "string",
+      "enum": [
+        "pequena_avaria",
+        "monta",
+        "recuperado_financiamento",
+        "venda_antecipada",
+        "repasse",
+        "no_estado"
+      ],
+      "description": "Situa\u00e7\u00e3o do bem"
+    },
+    "praca": {
+      "type": "string",
+      "enum": [
+        "praca_unica",
+        "primeira_praca",
+        "segunda_praca",
+        "terceira_praca"
+      ],
+      "description": "Pra\u00e7a do leil\u00e3o"
+    },
+    "placa": {
+      "type": "string",
+      "description": "Placa do ve\u00edculo"
+    },
+    "chassi": {
+      "type": "string",
+      "description": "N\u00famero do chassi"
+    },
+    "matricula": {
+      "type": "string",
+      "description": "Matr\u00edcula do im\u00f3vel"
+    },
+    "banco": {
+      "type": "string",
+      "description": "Banco respons\u00e1vel"
+    },
+    "marca": {
+      "type": "string",
+      "description": "Marca do ve\u00edculo"
+    },
+    "modelo": {
+      "type": "string",
+      "description": "Modelo do ve\u00edculo"
+    },
+    "ano": {
+      "type": "string",
+      "description": "Ano do ve\u00edculo ou im\u00f3vel"
+    },
+    "cor": {
+      "type": "string",
+      "description": "Cor do ve\u00edculo"
+    },
+    "cidade": {
+      "type": "string",
+      "description": "Cidade do bem"
+    },
+    "estado": {
+      "type": "string",
+      "description": "Estado (UF)"
+    },
+    "lance_inicial": {
+      "type": "number",
+      "description": "Valor do lance inicial"
+    },
+    "lance_atual": {
+      "type": "number",
+      "description": "Lance atual / avalia\u00e7\u00e3o"
+    },
+    "valor_avaliacao": {
+      "type": "number",
+      "description": "Valor de avalia\u00e7\u00e3o"
+    },
+    "data_leilao": {
+      "type": "string",
+      "format": "date",
+      "description": "Data do leil\u00e3o"
+    },
+    "hora_leilao": {
+      "type": "string",
+      "description": "Hora do leil\u00e3o"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "monitorando",
+        "arrematado",
+        "nao_arrematado",
+        "cancelado"
+      ],
+      "default": "monitorando",
+      "description": "Status do acompanhamento"
+    },
+    "historico_lances": {
+      "type": "array",
+      "description": "Hist\u00f3rico de lances registrados",
+      "items": {
+        "type": "object",
+        "properties": {
+          "valor": {
+            "type": "number"
+          },
+          "data": {
+            "type": "string"
+          },
+          "observacao": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notas": {
+      "type": "string",
+      "description": "Notas pessoais sobre o lote"
+    }
+  },
+  "required": [
+    "titulo"
+  ]
+}
