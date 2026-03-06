@@ -1,0 +1,140 @@
+{
+  "name": "Rastreamento",
+  "type": "object",
+  "properties": {
+    "lote_id": {
+      "type": "string",
+      "description": "ID do lote vinculado (opcional)"
+    },
+    "tipo_busca": {
+      "type": "string",
+      "enum": [
+        "chassi",
+        "placa",
+        "matricula",
+        "processo",
+        "cidade_estado"
+      ],
+      "description": "Tipo de busca realizada"
+    },
+    "chassi": {
+      "type": "string"
+    },
+    "placa": {
+      "type": "string"
+    },
+    "matricula": {
+      "type": "string"
+    },
+    "numero_processo": {
+      "type": "string"
+    },
+    "cidade": {
+      "type": "string"
+    },
+    "estado": {
+      "type": "string"
+    },
+    "resultado_busca": {
+      "type": "string",
+      "description": "Resultado bruto da busca"
+    },
+    "bem": {
+      "type": "object",
+      "description": "Dados do bem encontrado",
+      "properties": {
+        "descricao": {
+          "type": "string"
+        },
+        "marca": {
+          "type": "string"
+        },
+        "modelo": {
+          "type": "string"
+        },
+        "ano": {
+          "type": "string"
+        },
+        "cor": {
+          "type": "string"
+        },
+        "situacao": {
+          "type": "string"
+        },
+        "proprietario": {
+          "type": "string"
+        },
+        "endereco": {
+          "type": "string"
+        }
+      }
+    },
+    "processo": {
+      "type": "object",
+      "description": "Dados do processo judicial/extrajudicial",
+      "properties": {
+        "numero": {
+          "type": "string"
+        },
+        "tipo": {
+          "type": "string"
+        },
+        "vara": {
+          "type": "string"
+        },
+        "comarca": {
+          "type": "string"
+        },
+        "estado": {
+          "type": "string"
+        },
+        "partes": {
+          "type": "string"
+        },
+        "valor_causa": {
+          "type": "number"
+        },
+        "valor_debito": {
+          "type": "number"
+        },
+        "valor_avaliacao": {
+          "type": "number"
+        },
+        "valor_minimo_1_praca": {
+          "type": "number"
+        },
+        "valor_minimo_2_praca": {
+          "type": "number"
+        },
+        "data_distribuicao": {
+          "type": "string"
+        },
+        "data_leilao": {
+          "type": "string"
+        },
+        "situacao_processo": {
+          "type": "string"
+        },
+        "fase": {
+          "type": "string"
+        },
+        "leiloeiro": {
+          "type": "string"
+        },
+        "observacoes": {
+          "type": "string"
+        }
+      }
+    },
+    "tem_processo": {
+      "type": "boolean",
+      "default": false
+    },
+    "notas": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tipo_busca"
+  ]
+}
