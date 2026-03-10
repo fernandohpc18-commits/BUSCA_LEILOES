@@ -1,80 +1,42 @@
-import { Toaster } from "@/components/ui/toaster"
-import { QueryClientProvider } from '@tanstack/react-query'
-import { queryClientInstance } from '@/lib/query-client'
-import { pagesConfig } from './pages.config'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PageNotFound from './lib/PageNotFound';
-import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-
-const { Pages, Layout, mainPage } = pagesConfig;
-const mainPageKey = mainPage ?? Object.keys(Pages)[0];
-const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
-
-const LayoutWrapper = ({ children, currentPageName }) => Layout ?
-  <Layout currentPageName={currentPageName}>{children}</Layout>
-  : <>{children}</>;
-
-const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
-
-  // Show loading spinner while checking app public settings or auth
-  if (isLoadingPublicSettings || isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
-  // Handle authentication errors
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
-    }
-  }
-
-  // Render the main app
-  return (
-    <Routes>
-      <Route path="/" element={
-        <LayoutWrapper currentPageName={mainPageKey}>
-          <MainPage />
-        </LayoutWrapper>
-      } />
-      {Object.entries(Pages).map(([path, Page]) => (
-        <Route
-          key={path}
-          path={`/${path}`}
-          element={
-            <LayoutWrapper currentPageName={path}>
-              <Page />
-            </LayoutWrapper>
-          }
-        />
-      ))}
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
-  );
-};
-
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Lotes from "./pages/Lotes";
+import Rastreamento from "./pages/Rastreamento";
+import { LayoutDashboard, Radar } from "lucide-react";
 
 function App() {
-
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
-  )
+    <Router>
+      <div className="min-h-screen bg-slate-950 text-white">
+        {/* Menu Superior Simples */}
+        <nav className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div className="flex items-center gap-2 text-gold-500 font-bold text-xl tracking-tighter">
+              <span className="bg-gold-500 text-slate-950 px-2 py-0.5 rounded">BUSCA</span>
+              LEILÕES
+            </div>
+            
+            <div className="flex gap-6">
+              <Link to="/" className="flex items-center gap-2 text-sm font-medium hover:text-gold-400 transition-colors">
+                <LayoutDashboard className="w-4 h-4" /> Lotes
+              </Link>
+              <Link to="/rastreamento" className="flex items-center gap-2 text-sm font-medium hover:text-gold-400 transition-colors">
+                <Radar className="w-4 h-4" /> Rastreamento
+              </Link>
+            </div>
+          </div>
+        </nav>
+
+        {/* Conteúdo das Páginas */}
+        <main className="max-w-7xl mx-auto py-6">
+          <Routes>
+            <Route path="/" element={<Lotes />} />
+            <Route path="/rastreamento" element={<Rastreamento />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;
