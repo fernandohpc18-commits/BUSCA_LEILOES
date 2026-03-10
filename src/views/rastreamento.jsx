@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 // Importamos o seu novo cliente que conecta na Planilha Google
 import { leilaoClient } from "@/API/leilaoClient";
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
-import FormRastreamento from "@/components/rastreamento/FormRastreamento.jsx";
-import { CardRastreamento } from "@/components/rastreamento/CardRastreamento.jsx";
+import FormRastreamento from "../components/rastreamento/formRastreamento.jsx";
+import { CardRastreamento } from "../components/rastreamento/cardRastreamento.jsx";
 
 export default function Rastreamento() {
   const [rastreamentos, setRastreamentos] = useState([]);
