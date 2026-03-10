@@ -3,7 +3,7 @@ import { leilaoClient } from "@/API/leilaoClient";
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
 // Tente esta combinação exata (tudo minúsculo conforme a foto do seu GitHub)
-import FormRastreamento from "@/components/rastreamento/formRastreamento.jsx";
+import FormRastreamento from "@/components/rastreamento/FormX.jsx";
 import { CardRastreamento } from "@/components/rastreamento/cardRastreamento.jsx";
 
 export default function Rastreamento() {
