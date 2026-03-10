@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { leilaoClient } from "@/API/leilaoClient"; 
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
-// Trocando o 'c' por 'C' maiúsculo para testar o padrão de pastas do GitHub
-import FormRastreamento from "@/Components/tracker/SearchForm.jsx";
-import { CardRastreamento } from "@/Components/tracker/ResultCard.jsx";
+// ATENÇÃO: 'components' (c minúsculo) e 'searchForm' / 'resultCard' (iniciando com minúsculo)
+// Conforme as fotos do seu repositório:
+import FormRastreamento from "@/components/tracker/searchForm.jsx";
+import { CardRastreamento } from "@/components/tracker/resultCard.jsx";
+
 
 export default function Rastreamento() {
   const [rastreamentos, setRastreamentos] = useState([]);
