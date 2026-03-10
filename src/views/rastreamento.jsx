@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { leilaoClient } from "@/API/leilaoClient"; 
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
-// Tente esta combinação exata (tudo minúsculo conforme a foto do seu GitHub)
-import FormRastreamento from "@/components/rastreamento/formRastreamento.jsx";
-import { CardRastreamento } from "@/components/rastreamento/cardRastreamento.jsx";
+// Novos nomes para forçar o reconhecimento do sistema
+import FormRastreamento from "@/components/rastreamento/BuscaForm.jsx";
+import { CardRastreamento } from "@/components/rastreamento/ResultadoCard.jsx";
+
+// ... resto do seu código igual ...
 
 export default function Rastreamento() {
   const [rastreamentos, setRastreamentos] = useState([]);
