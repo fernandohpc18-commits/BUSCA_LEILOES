@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-// O @ aponta para a pasta src. Vamos usar o novo nome 'tracker'
 import { leilaoClient } from "@/API/leilaoClient"; 
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
-// Importando do novo local 'tracker' para limpar o cache da Vercel
-import FormRastreamento from "@/components/tracker/SearchForm.jsx";
-import { CardRastreamento } from "@/components/tracker/ResultCard.jsx";
+// Trocando o 'c' por 'C' maiúsculo para testar o padrão de pastas do GitHub
+import FormRastreamento from "@/Components/tracker/SearchForm.jsx";
+import { CardRastreamento } from "@/Components/tracker/ResultCard.jsx";
 
 export default function Rastreamento() {
   const [rastreamentos, setRastreamentos] = useState([]);
