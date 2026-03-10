@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { leilaoClient } from "@/API/leilaoClient"; 
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
-// Novos nomes para forçar o reconhecimento do sistema
-import FormRastreamento from "@/components/rastreamento/BuscaForm.jsx";
-import { CardRastreamento } from "@/components/rastreamento/ResultadoCard.jsx";
+// Nomes novos para enganar o cache da Vercel
+import FormRastreamento from "@/components/rastreamento/SearchForm.jsx";
+import { CardRastreamento } from "@/components/rastreamento/ResultCard.jsx";
 
 // ... resto do seu código igual ...
 
