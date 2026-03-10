@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { leilaoClient } from "@/API/leilaoClient"; 
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
-// ATENÇÃO: 'components' (c minúsculo) e 'searchForm' / 'resultCard' (iniciando com minúsculo)
-// Conforme as fotos do seu repositório:
-import FormRastreamento from "@/components/tracker/searchForm.jsx";
-import { CardRastreamento } from "@/components/tracker/resultCard.jsx";
+// CORREÇÃO: Adicionado o "e" em componentEs conforme sua pasta no GitHub
+import FormRastreamento from "@/componentes/tracker/SearchForm.jsx";
+import { CardRastreamento } from "@/componentes/tracker/ResultCard.jsx";
 
 
 export default function Rastreamento() {
