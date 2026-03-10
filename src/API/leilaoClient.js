@@ -52,3 +52,24 @@ export const leilaoClient = {
     }
   }
 };
+
+
+// Adicione estas funções dentro do leilaoClient
+export const leilaoClient = {
+  // ... outras funções (getLotes, rastrearVeiculo)
+
+  async getLeiloeiros() {
+    // Note que usamos o mesmo endpoint, mas o Apps Script vai ler a aba Leiloeiros
+    // dependendo da sua lógica de doGet. Se precisar, passe um parâmetro ?sheet=Leiloeiros
+    const response = await fetch(`${API_URL}?sheet=Leiloeiros`);
+    return response.json();
+  },
+
+  async executarBuscaAutomatica() {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'buscar_leiloeiros_automatico' }),
+    });
+    return response.json();
+  }
+};
