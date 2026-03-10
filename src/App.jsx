@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-// Adicionamos o .jsx no final para o servidor não se perder
-import Lotes from "@/pages/Lotes.jsx";
-import Rastreamento from "@/pages/Rastreamento.jsx";
+// Tentativa com caminho relativo simples e nomes minúsculos (comum em builds)
+import Lotes from "./pages/lotes";
+import Rastreamento from "./pages/rastreamento";
 import { LayoutDashboard, Radar, Shield } from "lucide-react";
 
 function App() {
