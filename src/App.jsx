@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-// Importando com nomes minúsculos para evitar conflitos de Linux/Windows
+// Importação direta e minúscula
 import Lotes from "./pages/lotes.jsx";
 import Rastreamento from "./pages/rastreamento.jsx";
-import { LayoutDashboard, Radar } from "lucide-react";
+import { LayoutDashboard, Radar, Shield } from "lucide-react";
 
 function App() {
   return (
