@@ -1,0 +1,16 @@
+name: Varredura Automática de Leilões
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  atualizar_lotes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar API do Google para Varredura
+        run: |
+          curl -L -X POST "SUA_URL_DO_APPS_SCRIPT_AQUI" \
+          -H "Content-Type: application/json" \
+          -d '{"action": "varrer_todos_sites"}'
