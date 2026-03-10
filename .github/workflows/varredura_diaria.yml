@@ -11,6 +11,6 @@ jobs:
     steps:
       - name: Chamar API do Google para Varredura
         run: |
-          curl -L -X POST "SUA_URL_DO_APPS_SCRIPT_AQUI" \
+          curl -L -X POST "https://script.google.com/macros/s/AKfycbw3h4Xhe143SU2YymykGHxYnBXmOgcblnSnaCI4I-RmwSBVFKLCWuY438fqKSsoN826AA/exec" \
           -H "Content-Type: application/json" \
           -d '{"action": "varrer_todos_sites"}'
