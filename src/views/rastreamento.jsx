@@ -3,8 +3,8 @@ import { leilaoClient } from "@/API/leilaoClient";
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
 // Nomes novos para enganar o cache da Vercel
-import FormRastreamento from "@/components/rastreamento/SearchForm.jsx";
-import { CardRastreamento } from "@/components/rastreamento/ResultCard.jsx";
+import FormRastreamento from "../components/rastreamento/SearchForm.jsx";
+import { CardRastreamento } from "../components/rastreamento/ResultCard.jsx";;
 
 // ... resto do seu código igual ...
 
