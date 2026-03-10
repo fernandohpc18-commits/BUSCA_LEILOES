@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-// Ajustado para P maiúsculo conforme a sua pasta no GitHub
-import Lotes from "./Pages/lotes.jsx";
-import Rastreamento from "./Pages/rastreamento.jsx";
-import { LayoutDashboard, Radar, Shield } from "lucide-react";
+// Agora apontando para a pasta nova 'views'
+import Lotes from "./views/lotes.jsx";
+import Rastreamento from "./views/rastreamento.jsx";
+import { LayoutDashboard, Radar, Shield } from "lucide-react";;
 
 function App() {
   return (
