@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-// O @ garante que ele comece a procurar pela raiz da pasta src
+// O @ aponta para a pasta src. Vamos usar o novo nome 'tracker'
 import { leilaoClient } from "@/API/leilaoClient"; 
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
-// Importando os novos nomes com o atalho @
-import FormRastreamento from "@/components/rastreamento/SearchForm.jsx";
-import { CardRastreamento } from "@/components/rastreamento/ResultCard.jsx";
+// Importando do novo local 'tracker' para limpar o cache da Vercel
+import FormRastreamento from "@/components/tracker/SearchForm.jsx";
+import { CardRastreamento } from "@/components/tracker/ResultCard.jsx";
 
 export default function Rastreamento() {
   const [rastreamentos, setRastreamentos] = useState([]);
