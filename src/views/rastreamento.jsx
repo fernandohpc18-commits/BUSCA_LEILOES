@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-// Importamos o seu novo cliente que conecta na Planilha Google
-import { leilaoClient } from "@/API/leilaoClient";
+import { leilaoClient } from "@/API/leilaoClient"; 
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
-import FormRastreamento from "../components/rastreamento/formRastreamento.jsx";
-import { CardRastreamento } from "../components/rastreamento/cardRastreamento.jsx";
+
+// Usando o alias @ que aponta direto para a pasta 'src'
+import FormRastreamento from "@/components/rastreamento/formRastreamento.jsx";
+import { CardRastreamento } from "@/components/rastreamento/cardRastreamento.jsx";
 
 export default function Rastreamento() {
   const [rastreamentos, setRastreamentos] = useState([]);
