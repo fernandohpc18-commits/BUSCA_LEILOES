@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { leilaoClient } from "../API/leilaoClient"; 
+import { leilaoClient } from "@/API/leilaoClient"; 
 import { Radar, RefreshCw, Loader2, ShieldAlert } from "lucide-react";
 
-// TENTATIVA A: Se a sua pasta 'components' no GitHub estiver com C minúsculo
-import FormRastreamento from "../components/rastreamento/formRastreamento.jsx";
-import { CardRastreamento } from "../components/rastreamento/cardRastreamento.jsx";
+// Tente esta combinação exata (tudo minúsculo conforme a foto do seu GitHub)
+import FormRastreamento from "@/components/rastreamento/formRastreamento.jsx";
+import { CardRastreamento } from "@/components/rastreamento/cardRastreamento.jsx";
 
 export default function Rastreamento() {
   const [rastreamentos, setRastreamentos] = useState([]);
