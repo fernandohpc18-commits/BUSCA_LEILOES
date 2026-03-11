@@ -3,18 +3,20 @@ const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbzrQnnglmf0EzqJW
 export const leilaoClient = {
   getLotes: async () => {
     try {
-      const response = await fetch(`${GOOGLE_API_URL}?sheet=Lotes&t=${Date.now()}`);
+      const url = `${GOOGLE_API_URL}?sheet=Lotes&t=${Date.now()}`;
+      console.log("Tentando buscar dados de:", url);
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Erro na resposta da rede");
+      
       const data = await response.json();
+      console.log("Dados que chegaram no site:", data);
+      
       return Array.isArray(data) ? data : [];
-    } catch (e) { return []; }
-  },
-
-  getLeiloeiros: async () => {
-    try {
-      const response = await fetch(`${GOOGLE_API_URL}?sheet=Leiloeiros&t=${Date.now()}`);
-      const data = await response.json();
-      return Array.isArray(data) ? data : [];
-    } catch (e) { return []; }
+    } catch (error) {
+      console.error("ERRO CRÍTICO NO SITE:", error);
+      return [];
+    }
   },
 
   executarVarreduraLotes: async () => {
@@ -26,6 +28,6 @@ export const leilaoClient = {
         body: JSON.stringify({ action: 'varrer_todos_lotes' })
       });
       return { status: "sucesso" };
-    } catch (e) { throw e; }
+    } catch (e) { console.error(e); throw e; }
   }
 };
