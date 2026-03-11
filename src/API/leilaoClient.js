@@ -1,4 +1,4 @@
-const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycby3kY7VnH_CyUpTMQykgt6k8SJEtf6FamX6VXLJxrd7LqT3VkJm34DqnyLHmNTCMAEjUw/exec";
+const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbzrQnnglmf0EzqJWY1M-Q6E-NkTTbZZb1ulHiOExwKz5ROovgbic1cqjtxY5p5aQzHAuw/exec";
 
 export const leilaoClient = {
   getLotes: async () => {
