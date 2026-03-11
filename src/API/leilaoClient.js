@@ -1,5 +1,5 @@
 // ATENÇÃO: Verifique se essa URL termina com /exec
-const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbzrQnnglmf0EzqJWY1M-Q6E-NkTTbZZb1ulHiOExwKz5ROovgbic1cqjtxY5p5aQzHAuw/exec";
+const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbz2M_FMdZKkhR-VLcN2sftoMn-roSo06uK3mO37Jw_EhO2YI-SkWcVmyjtqXiOCGtlGgg/exec";
 
 export const leilaoClient = {
   getLotes: async () => {
