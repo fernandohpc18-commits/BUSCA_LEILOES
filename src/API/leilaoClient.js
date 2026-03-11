@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbw3h4Xhe143SU2YymykGHxYnBXmOgcblnSnaCI4I-RmwSBVFKLCWuY438fqKSsoN826AA/exec";
+const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxvG3A5XX3vZuugLZXHChlpIzqJQKYQjev0gMEz4wDLxRn96zu2yK9DJgpOTr7STp5RHw/exec";
 
 export const leilaoClient = {
   /**
