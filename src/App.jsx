@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-// Imports ajustados exatamente aos nomes da sua pasta src/views
+// Imports ajustados para os nomes reais com extensão duplicada detectados na sua pasta
 import Dashboard from "./views/Dashboard"; 
-import Lotes from "./views/lotes"; 
+import Lotes from "./views/lotes.jsx"; // Ajustado para ler o arquivo lotes.jsx.jsx
 import Leiloeiros from "./views/Leiloeiros";
-import Investigar from "./views/investigar"; 
+import Investigar from "./views/investigar.jsx"; // Ajustado para ler o arquivo investigar.jsx.jsx
 
 import { LayoutDashboard, Gavel, Users, Search, Shield } from "lucide-react";
 
@@ -13,7 +13,7 @@ function App() {
   return (
     <Router>
       <div className="flex min-h-screen bg-slate-950 text-white font-sans">
-        {/* Sidebar Lateral - Menu */}
+        {/* Sidebar Lateral */}
         <aside className="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col gap-8 hidden md:flex">
           <div className="flex items-center gap-2 px-2">
             <Shield className="text-amber-500" size={32} />
@@ -36,7 +36,7 @@ function App() {
           </nav>
         </aside>
 
-        {/* Área de Conteúdo Principal */}
+        {/* Conteúdo */}
         <main className="flex-1 overflow-auto bg-slate-950">
           <Routes>
             <Route path="/" element={<Dashboard />} />
