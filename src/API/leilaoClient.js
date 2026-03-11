@@ -1,28 +1,23 @@
-import axios from 'axios';
-
-const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxvG3A5XX3vZuugLZXHChlpIzqJQKYQjev0gMEz4wDLxRn96zu2yK9DJgpOTr7STp5RHw/exec";
+const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxvG3A5XX3vZuugLZXHChlpIzqJQKYQjev0gMEz4wDLxRn96zu2yK9DJgpOTr7STp5RHw/exec"; // <-- COLOQUE A URL DO NOVO DEPLOY AQUI!
 
 export const leilaoClient = {
   /**
-   * Busca Lotes (Aba Lotes)
+   * Busca Lotes ou Leiloeiros (GET)
    */
   getLotes: async () => {
     try {
-      const response = await axios.get(`${GOOGLE_API_URL}?sheet=Lotes`);
-      return Array.isArray(response.data) ? response.data : [];
+      const response = await fetch(`${GOOGLE_API_URL}?sheet=Lotes`);
+      return await response.json();
     } catch (error) {
       console.error("Erro ao buscar lotes:", error);
       return [];
     }
   },
 
-  /**
-   * Busca Leiloeiros (Aba Leiloeiros)
-   */
   getLeiloeiros: async () => {
     try {
-      const response = await axios.get(`${GOOGLE_API_URL}?sheet=Leiloeiros`);
-      return Array.isArray(response.data) ? response.data : [];
+      const response = await fetch(`${GOOGLE_API_URL}?sheet=Leiloeiros`);
+      return await response.json();
     } catch (error) {
       console.error("Erro ao buscar leiloeiros:", error);
       return [];
@@ -30,49 +25,57 @@ export const leilaoClient = {
   },
 
   /**
-   * Investigação de Placa/Chassi (Gemini)
-   */
-  rastrearVeiculo: async (placa, chassi) => {
-    try {
-      // Usamos POST para enviar os dados de investigação
-      const response = await axios.post(GOOGLE_API_URL, {
-        placa: placa,
-        chassi: chassi
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Erro no rastreamento:", error);
-      return { erro: "Falha na investigação." };
-    }
-  },
-
-  /**
-   * Executa a Busca Automática de Leiloeiros (IA)
-   */
-  executarBuscaAutomatica: async () => {
-    try {
-      const response = await axios.post(GOOGLE_API_URL, {
-        action: 'buscar_leiloeiros_automatico'
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Erro na busca automática:", error);
-      throw error;
-    }
-  },
-
-  /**
-   * Executa a Varredura de Lotes nos sites (IA)
+   * Executa a Varredura Completa (Botão Sincronizar)
    */
   executarVarreduraLotes: async () => {
     try {
-      const response = await axios.post(GOOGLE_API_URL, {
-        action: 'varrer_todos_lotes'
+      // Usamos fetch com modo simplificado para garantir que o Google Script receba
+      await fetch(GOOGLE_API_URL, {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'varrer_todos_lotes' })
       });
-      return response.data;
+      // Como o 'no-cors' não permite ler a resposta, retornamos sucesso manual
+      return { status: "sucesso", message: "Comando de varredura enviado!" };
     } catch (error) {
       console.error("Erro na varredura:", error);
       throw error;
+    }
+  },
+
+  /**
+   * Executa a Busca de Leiloeiros via IA
+   */
+  executarBuscaAutomatica: async () => {
+    try {
+      await fetch(GOOGLE_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'buscar_leiloeiros_automatico' })
+      });
+      return { status: "sucesso" };
+    } catch (error) {
+      console.error("Erro na busca de leiloeiros:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Investigação de Placa (Individual)
+   */
+  rastrearVeiculo: async (placa, chassi) => {
+    try {
+      const response = await fetch(GOOGLE_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'investigar', placa, chassi })
+      });
+      return await response.json();
+    } catch (error) {
+      console.error("Erro no rastreamento:", error);
+      return { erro: "Falha na investigação." };
     }
   }
 };
