@@ -1,4 +1,4 @@
-const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxvG3A5XX3vZuugLZXHChlpIzqJQKYQjev0gMEz4wDLxRn96zu2yK9DJgpOTr7STp5RHw/exec"; // <-- COLOQUE A URL DO NOVO DEPLOY AQUI!
+const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxpxy2aeRpYE94BqGZl8BVJdzU30wtSK7ptCc3Qd6qBYcWIt_dscshvOAPG3y0kCqAWAw/exec"; // <-- COLOQUE A URL DO NOVO DEPLOY AQUI!
 
 export const leilaoClient = {
   /**
