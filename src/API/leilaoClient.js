@@ -1,33 +1,20 @@
-// ATENÇÃO: Verifique se essa URL termina com /exec
 const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbz2M_FMdZKkhR-VLcN2sftoMn-roSo06uK3mO37Jw_EhO2YI-SkWcVmyjtqXiOCGtlGgg/exec";
 
 export const leilaoClient = {
   getLotes: async () => {
     try {
-      // O Date.now() impede que o navegador mostre dados velhos (cache)
-      const url = `${GOOGLE_API_URL}?sheet=Lotes&t=${Date.now()}`;
-      console.log("Conectando ao Google...");
-      
-      const response = await fetch(url);
+      const response = await fetch(`${GOOGLE_API_URL}?sheet=Lotes&t=${Date.now()}`);
       const data = await response.json();
-      
-      console.log("Lotes carregados com sucesso:", data.length);
-      
-      // Se o Google retornar um erro em vez de lista, enviamos vazio para não travar
-      if (data.status === "erro") {
-        console.error("Erro vindo do Google:", data.message);
-        return [];
-      }
-
       return Array.isArray(data) ? data : [];
     } catch (error) {
-      console.error("Erro ao conectar com a API:", error);
+      console.error("Erro ao buscar:", error);
       return [];
     }
   },
 
   executarVarreduraLotes: async () => {
     try {
+      // Usamos no-cors para evitar os avisos chatos do console que você viu
       await fetch(GOOGLE_API_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -36,7 +23,6 @@ export const leilaoClient = {
       });
       return { status: "sucesso" };
     } catch (e) {
-      console.error("Falha ao iniciar varredura:", e);
       throw e;
     }
   }
