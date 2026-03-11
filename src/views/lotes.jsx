@@ -3,7 +3,7 @@ import { leilaoClient } from "@/API/leilaoClient";
 import { 
   Gavel, Filter, LayoutGrid, List, Search, 
   MapPin, Calendar, ExternalLink, ChevronLeft, ChevronRight,
-  TrendingUp, Award, Loader2
+  TrendingUp, Award, Loader2, RefreshCw // Importação corrigida aqui
 } from "lucide-react";
 
 export default function Lotes() {
@@ -11,22 +11,43 @@ export default function Lotes() {
   const [filtroTipo, setFiltroTipo] = useState("Todos");
   const [busca, setBusca] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const carregarLotes = async () => {
+    setLoading(true);
+    try {
+      const data = await leilaoClient.getLotes();
+      setLotes(data);
+    } catch (e) { 
+      console.error("Erro ao carregar lotes:", e); 
+    } finally { 
+      setLoading(false); 
+    }
+  };
 
   useEffect(() => {
-    const carregar = async () => {
-      try {
-        const data = await leilaoClient.getLotes();
-        setLotes(data);
-      } catch (e) { console.error(e); }
-      finally { setLoading(false); }
-    };
-    carregar();
+    carregarLotes();
   }, []);
+
+  const handleSincronizar = async () => {
+    setIsSyncing(true);
+    try {
+      // Chama a função de varredura que configuramos no Apps Script
+      await leilaoClient.executarVarreduraLotes(); 
+      alert("Varredura iniciada! Os novos lotes aparecerão em instantes.");
+      carregarLotes();
+    } catch (e) {
+      alert("Erro ao sincronizar varredura.");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   // Lógica de Filtro
   const lotesFiltrados = lotes.filter(l => {
     const matchesTipo = filtroTipo === "Todos" || l.tipo_bem === filtroTipo;
-    const matchesBusca = l.titulo?.toLowerCase().includes(busca.toLowerCase());
+    const matchesBusca = (l.titulo?.toLowerCase().includes(busca.toLowerCase())) || 
+                        (l.placa?.toLowerCase().includes(busca.toLowerCase()));
     return matchesTipo && matchesBusca;
   });
 
@@ -38,12 +59,12 @@ export default function Lotes() {
         <div className="flex flex-col gap-6 mb-10 border-b border-slate-800 pb-8">
           <div className="flex justify-between items-end">
             <div>
-              <h1 className="text-4xl font-black text-amber-500 italic tracking-tighter">OS MEUS LOTES</h1>
-              <p className="text-slate-500 font-mono text-xs mt-1 underline">CATÁLOGO GLOBAL DE OPORTUNIDADES</p>
+              <h1 className="text-4xl font-black text-amber-500 italic tracking-tighter uppercase">Os Meus Lotes</h1>
+              <p className="text-slate-500 font-mono text-xs mt-1 underline tracking-widest">CATÁLOGO GLOBAL DE OPORTUNIDADES</p>
             </div>
             <div className="bg-slate-900 border border-slate-800 p-1 rounded-lg flex">
                <button className="p-2 bg-amber-500 text-black rounded shadow-lg"><LayoutGrid size={18}/></button>
-               <button className="p-2 text-slate-500 hover:text-white"><List size={18}/></button>
+               <button className="p-2 text-slate-500 hover:text-white transition-colors"><List size={18}/></button>
             </div>
           </div>
 
@@ -53,12 +74,12 @@ export default function Lotes() {
               <input 
                 type="text" 
                 placeholder="Buscar placa, título ou matrícula..."
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl py-3 pl-10 text-sm outline-none focus:border-amber-500 transition-all"
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl py-3 pl-10 text-sm outline-none focus:border-amber-500 transition-all text-white"
                 onChange={(e) => setBusca(e.target.value)}
               />
             </div>
             <select 
-              className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none"
+              className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm outline-none text-slate-300 focus:border-amber-500 transition-all"
               onChange={(e) => setFiltroTipo(e.target.value)}
             >
               <option value="Todos">Todos os Tipos</option>
@@ -66,9 +87,15 @@ export default function Lotes() {
               <option value="Moto">Motos</option>
               <option value="Apartamento">Apartamentos</option>
               <option value="Sítio/Fazenda">Sítios/Fazendas</option>
+              <option value="Sucatas">Sucatas</option>
             </select>
-            <button className="bg-amber-600 hover:bg-amber-500 text-black font-black uppercase text-xs py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-              <RefreshCw size={16}/> Sincronizar Varredura
+            <button 
+              onClick={handleSincronizar}
+              disabled={isSyncing}
+              className="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-black font-black uppercase text-xs py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(217,119,6,0.3)]"
+            >
+              {isSyncing ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16}/>}
+              Sincronizar Varredura
             </button>
           </div>
         </div>
@@ -77,13 +104,19 @@ export default function Lotes() {
         {loading ? (
           <div className="flex flex-col items-center justify-center h-64">
             <Loader2 className="animate-spin text-amber-500 mb-4" size={48} />
-            <p className="text-slate-500 font-mono">VASCULHANDO BANCO DE DADOS...</p>
+            <p className="text-slate-500 font-mono animate-pulse">VASCULHANDO BANCO DE DADOS...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {lotesFiltrados.map((lote) => (
-              <CardSuperTrunfo key={lote.id} lote={lote} />
-            ))}
+            {lotesFiltrados.length > 0 ? (
+              lotesFiltrados.map((lote, index) => (
+                <CardSuperTrunfo key={lote.id || index} lote={lote} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-20 border-2 border-dashed border-slate-800 rounded-3xl">
+                <p className="text-slate-500 font-mono">Nenhum lote localizado para este filtro.</p>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -91,69 +124,80 @@ export default function Lotes() {
   );
 }
 
-// Componente Interno do Card "Super Trunfo"
 function CardSuperTrunfo({ lote }) {
   const imagens = lote.imagens?.split(',') || ['https://via.placeholder.com/400x300?text=Sem+Imagem'];
 
   return (
-    <div className="group bg-slate-900 border-2 border-slate-800 hover:border-amber-500 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 flex flex-col">
+    <div className="group bg-slate-900 border-2 border-slate-800 hover:border-amber-500 rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 flex flex-col relative">
       {/* Topo / Carrossel */}
       <div className="relative h-56 overflow-hidden">
         <img 
-          src={imagens[0]} 
+          src={imagens[0].trim()} 
           alt={lote.titulo} 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute top-3 left-3 flex gap-2">
+        
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-wrap gap-2">
           <span className="bg-black/80 backdrop-blur-md text-amber-500 text-[9px] font-black px-2 py-1 rounded border border-amber-500/30 uppercase italic">
-            {lote.tipo_bem}
+            {lote.tipo_bem || 'Geral'}
           </span>
           <span className="bg-amber-500 text-black text-[9px] font-black px-2 py-1 rounded uppercase">
-            {lote.categoria}
+            {lote.categoria || 'Leilão'}
           </span>
         </div>
-        <div className="absolute bottom-0 w-full bg-gradient-to-t from-slate-900 p-4">
-           <p className="text-white font-black text-sm leading-tight uppercase line-clamp-2">{lote.titulo}</p>
+
+        {/* Gradiente de Título */}
+        <div className="absolute bottom-0 w-full bg-gradient-to-t from-slate-950 to-transparent p-4">
+           <p className="text-white font-black text-sm leading-tight uppercase line-clamp-2 drop-shadow-lg">
+             {lote.titulo}
+           </p>
         </div>
       </div>
 
       {/* Corpo / Stats */}
       <div className="p-5 flex-1 flex flex-col gap-4">
+        {/* Preços */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
             <span className="text-[9px] text-slate-500 uppercase block font-bold">Lance Inicial</span>
-            <span className="text-white font-black text-xs">R$ {lote.lance_inicial}</span>
+            <span className="text-slate-300 font-bold text-xs italic">R$ {lote.lance_inicial || '0,00'}</span>
           </div>
-          <div className="bg-amber-500/10 p-2 rounded-lg border border-amber-500/20">
+          <div className="bg-amber-500/5 p-2 rounded-lg border border-amber-500/20">
             <span className="text-[9px] text-amber-500 uppercase block font-bold">Lance Atual</span>
-            <span className="text-amber-500 font-black text-xs">R$ {lote.lance_atual}</span>
+            <span className="text-amber-500 font-black text-xs">R$ {lote.lance_atual || '---'}</span>
           </div>
         </div>
 
-        <div className="space-y-1 text-[10px] text-slate-400 font-medium">
-          <div className="flex justify-between border-b border-slate-800 pb-1">
-            <span className="flex items-center gap-1"><MapPin size={12} className="text-red-500"/> Local</span>
-            <span className="text-slate-200">{lote.praca}</span>
+        {/* Infos Detalhadas */}
+        <div className="space-y-2 text-[10px] text-slate-400 font-medium">
+          <div className="flex justify-between border-b border-slate-800 pb-1 items-center">
+            <span className="flex items-center gap-1.5"><MapPin size={12} className="text-red-500"/> Localidade</span>
+            <span className="text-slate-200 font-bold uppercase">{lote.praca || 'Brasil'}</span>
           </div>
-          <div className="flex justify-between border-b border-slate-800 pb-1">
-            <span className="flex items-center gap-1"><Award size={12} className="text-blue-500"/> Matrícula/Placa</span>
-            <span className="text-slate-200">{lote.matricula || lote.placa || '---'}</span>
+          <div className="flex justify-between border-b border-slate-800 pb-1 items-center">
+            <span className="flex items-center gap-1.5"><Award size={12} className="text-blue-400"/> Identificação</span>
+            <span className="text-slate-200 font-bold">{lote.placa || lote.matricula || 'NÃO INF.'}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="flex items-center gap-1"><Calendar size={12} className="text-amber-500"/> Lote</span>
-            <span className="text-slate-200">#{lote.numero_lote}</span>
+          <div className="flex justify-between items-center">
+            <span className="flex items-center gap-1.5"><Calendar size={12} className="text-amber-500"/> Registro Lote</span>
+            <span className="text-slate-200 font-mono">#{lote.numero_lote || '000'}</span>
           </div>
         </div>
 
+        {/* Botão Ação */}
         <a 
           href={lote.site_leilao} 
           target="_blank" 
           rel="noreferrer"
-          className="mt-auto bg-slate-800 group-hover:bg-amber-500 text-white group-hover:text-black font-black py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-xs uppercase italic"
+          className="mt-auto bg-slate-800 group-hover:bg-amber-600 text-slate-400 group-hover:text-black font-black py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-[11px] uppercase italic tracking-wider shadow-lg"
         >
-          Dar Lance <ExternalLink size={14}/>
+          Acessar Edital <ExternalLink size={14}/>
         </a>
       </div>
+      
+      {/* Moldura Super Trunfo de Seleção */}
+      <div className="absolute inset-0 border-2 border-transparent group-hover:border-amber-500/50 pointer-events-none rounded-2xl transition-all duration-500"></div>
     </div>
   );
 }
