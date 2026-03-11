@@ -1,35 +1,44 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-// Agora apontando para a pasta nova 'views'
-import Lotes from "./views/lotes.jsx";
-import Rastreamento from "./views/rastreamento.jsx";
-import { LayoutDashboard, Radar, Shield } from "lucide-react";;
+import Dashboard from "./views/Dashboard";
+import Lotes from "./views/Lotes";
+import Leiloeiros from "./views/Leiloeiros";
+import Rastreamento from "./views/Rastreamento";
+import { LayoutDashboard, Gavel, Users, Search, Shield } from "lucide-react";
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-slate-950 text-white font-sans">
-        <nav className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-amber-500 font-bold text-xl">
-              <Shield className="w-6 h-6 fill-amber-500 text-slate-900" />
-              <span>BUSCA<span className="text-white ml-1">LEILÕES</span></span>
-            </div>
-            
-            <div className="flex gap-8">
-              <Link to="/" className="text-sm font-semibold hover:text-amber-400">
-                <LayoutDashboard className="w-4 h-4 inline mr-1" /> Painel
-              </Link>
-              <Link to="/rastreamento" className="text-sm font-semibold hover:text-amber-400">
-                <Radar className="w-4 h-4 inline mr-1" /> Investigar
-              </Link>
-            </div>
+      <div className="flex min-h-screen bg-slate-950">
+        {/* Sidebar / Menu Lateral */}
+        <aside className="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col gap-8">
+          <div className="flex items-center gap-2 px-2">
+            <Shield className="text-amber-500" size={32} />
+            <span className="text-white font-black tracking-tighter text-xl italic">BUSCA LEILÕES</span>
           </div>
-        </nav>
 
-        <main className="max-w-7xl mx-auto p-4 md:p-8">
+          <nav className="flex flex-col gap-2">
+            <Link to="/" className="flex items-center gap-3 text-slate-400 hover:text-amber-500 p-3 rounded-xl hover:bg-slate-800 transition-all font-bold text-sm">
+              <LayoutDashboard size={20} /> PAINEL
+            </Link>
+            <Link to="/lotes" className="flex items-center gap-3 text-slate-400 hover:text-amber-500 p-3 rounded-xl hover:bg-slate-800 transition-all font-bold text-sm">
+              <Gavel size={20} /> LOTES
+            </Link>
+            <Link to="/leiloeiros" className="flex items-center gap-3 text-slate-400 hover:text-amber-500 p-3 rounded-xl hover:bg-slate-800 transition-all font-bold text-sm">
+              <Users size={20} /> LEILOEIROS
+            </Link>
+            <Link to="/rastreamento" className="flex items-center gap-3 text-slate-400 hover:text-amber-500 p-3 rounded-xl hover:bg-slate-800 transition-all font-bold text-sm">
+              <Search size={20} /> INVESTIGAR
+            </Link>
+          </nav>
+        </aside>
+
+        {/* Conteúdo Principal */}
+        <main className="flex-1 overflow-auto">
           <Routes>
-            <Route path="/" element={<Lotes />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/lotes" element={<Lotes />} />
+            <Route path="/leiloeiros" element={<Leiloeiros />} />
             <Route path="/rastreamento" element={<Rastreamento />} />
           </Routes>
         </main>
