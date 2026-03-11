@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-// Imports ajustados para os nomes reais com extensão duplicada detectados na sua pasta
+// Imports usando a extensão dupla exata que está no seu GitHub para não ter erro
 import Dashboard from "./views/Dashboard"; 
-import Lotes from "./views/lotes.jsx"; // Ajustado para ler o arquivo lotes.jsx.jsx
+import Lotes from "./views/lotes.jsx.jsx"; // Note o .jsx.jsx
 import Leiloeiros from "./views/Leiloeiros";
-import Investigar from "./views/investigar.jsx"; // Ajustado para ler o arquivo investigar.jsx.jsx
+import Investigar from "./views/investigar.jsx.jsx"; // Note o .jsx.jsx
 
 import { LayoutDashboard, Gavel, Users, Search, Shield } from "lucide-react";
 
@@ -36,7 +36,7 @@ function App() {
           </nav>
         </aside>
 
-        {/* Conteúdo */}
+        {/* Conteúdo Principal */}
         <main className="flex-1 overflow-auto bg-slate-950">
           <Routes>
             <Route path="/" element={<Dashboard />} />
