@@ -1,75 +1,78 @@
 import axios from 'axios';
 
-// Substitua o texto abaixo pela URL que você gerou no Apps Script (que termina em /exec)
 const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbw3h4Xhe143SU2YymykGHxYnBXmOgcblnSnaCI4I-RmwSBVFKLCWuY438fqKSsoN826AA/exec";
 
 export const leilaoClient = {
   /**
-   * Busca todos os lotes da Planilha Google (Aba Lotes)
+   * Busca Lotes (Aba Lotes)
    */
   getLotes: async () => {
     try {
-      // O Google Apps Script exige seguir redirecionamentos, o axios faz isso por padrão
-      const response = await axios.get(GOOGLE_API_URL);
-      
-      if (response.data && Array.isArray(response.data)) {
-        return response.data;
-      }
-      return [];
+      const response = await axios.get(`${GOOGLE_API_URL}?sheet=Lotes`);
+      return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
-      console.error("Erro ao buscar lotes no Google Sheets:", error);
+      console.error("Erro ao buscar lotes:", error);
       return [];
     }
   },
 
   /**
-   * Envia um novo lote capturado para a Planilha
+   * Busca Leiloeiros (Aba Leiloeiros)
    */
-  salvarLote: async (dadosLote) => {
+  getLeiloeiros: async () => {
     try {
-      const response = await axios.post(GOOGLE_API_URL, JSON.stringify(dadosLote));
-      return response.data === "Sucesso";
+      const response = await axios.get(`${GOOGLE_API_URL}?sheet=Leiloeiros`);
+      return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
-      console.error("Erro ao salvar lote:", error);
-      return false;
+      console.error("Erro ao buscar leiloeiros:", error);
+      return [];
     }
   },
 
   /**
-   * Rastreamento Avançado (Busca no Google/IA para Recall e Histórico)
-   * Esta função será conectada ao seu componente de Rastreamento
+   * Investigação de Placa/Chassi (Gemini)
    */
   rastrearVeiculo: async (placa, chassi) => {
     try {
-      console.log(`Iniciando investigação para Placa: ${placa} / Chassi: ${chassi}`);
-      
-      // Aqui o App solicita que o Google Script faça a pesquisa profunda
-      const response = await axios.get(`${GOOGLE_API_URL}?action=rastrear&placa=${placa}&chassi=${chassi}`);
+      // Usamos POST para enviar os dados de investigação
+      const response = await axios.post(GOOGLE_API_URL, {
+        placa: placa,
+        chassi: chassi
+      });
       return response.data;
     } catch (error) {
-      console.error("Erro no rastreamento avançado:", error);
-      return { erro: "Não foi possível completar a investigação agora." };
+      console.error("Erro no rastreamento:", error);
+      return { erro: "Falha na investigação." };
     }
-  }
-};
-
-
-// Adicione estas funções dentro do leilaoClient
-export const leilaoClient = {
-  // ... outras funções (getLotes, rastrearVeiculo)
-
-  async getLeiloeiros() {
-    // Note que usamos o mesmo endpoint, mas o Apps Script vai ler a aba Leiloeiros
-    // dependendo da sua lógica de doGet. Se precisar, passe um parâmetro ?sheet=Leiloeiros
-    const response = await fetch(`${API_URL}?sheet=Leiloeiros`);
-    return response.json();
   },
 
-  async executarBuscaAutomatica() {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'buscar_leiloeiros_automatico' }),
-    });
-    return response.json();
+  /**
+   * Executa a Busca Automática de Leiloeiros (IA)
+   */
+  executarBuscaAutomatica: async () => {
+    try {
+      const response = await axios.post(GOOGLE_API_URL, {
+        action: 'buscar_leiloeiros_automatico'
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Erro na busca automática:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Executa a Varredura de Lotes nos sites (IA)
+   */
+  executarVarreduraLotes: async () => {
+    try {
+      const response = await axios.post(GOOGLE_API_URL, {
+        action: 'varrer_todos_lotes'
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Erro na varredura:", error);
+      throw error;
+    }
   }
 };
