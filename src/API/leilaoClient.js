@@ -1,5 +1,5 @@
 // Substitua pela URL do seu novo deploy (que termina em /exec)
-const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxvG3A5XX3vZuugLZXHChlpIzqJQKYQjev0gMEz4wDLxRn96zu2yK9DJgpOTr7STp5RHw/exec";
+const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxpxy2aeRpYE94BqGZl8BVJdzU30wtSK7ptCc3Qd6qBYcWIt_dscshvOAPG3y0kCqAWAw/exec";
 
 export const leilaoClient = {
   /**
